@@ -5,14 +5,22 @@ import { Link } from "react-router-dom";
 
 const HeaderNav: React.FC = () => {
   return (
-    <Menu mode="horizontal" theme="light">
-      <Menu.Item key="home" icon={<HomeOutlined />}>
-        <Link to="/">Home</Link>
-      </Menu.Item>
-      <Menu.Item key="products" icon={<AppstoreOutlined />}>
-        <Link to="/products">Products</Link>
-      </Menu.Item>
-    </Menu>
+    <Menu
+      mode="horizontal"
+      theme="light"
+      items={[
+        {
+          label: <Link to="/">Home</Link>,
+          key: "home",
+          icon: <HomeOutlined />,
+        },
+        {
+          label: <Link to="/products">Products</Link>,
+          key: "products",
+          icon: <AppstoreOutlined />,
+        },
+      ]}
+    />
   );
 };
 

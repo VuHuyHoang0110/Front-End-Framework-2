@@ -14,18 +14,10 @@ const router = createBrowserRouter([
     path: "/products",
     element: <ProductList />,
   },
-  // {
-  //   path: "/users",
-  //   element: <UserList />,
-  // },
   {
     path: "/categories",
     element: <CategoryList />,
   },
-  // {
-  //   path: "/brands",
-  //   element: <BrandList />,
-  // },
 ]);
 
 function App() {
