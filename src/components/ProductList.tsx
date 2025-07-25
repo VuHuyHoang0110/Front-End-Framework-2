@@ -1,6 +1,6 @@
 import React from "react";
-import { useQuery } from "@tanstack/react-query";
-import { Image, Spin, Table, Alert } from "antd";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { Image, Spin, Table, Alert, Button, Popconfirm, message } from "antd";
 import HeaderNav from "./HeaderNav";
 
 interface Product {
@@ -8,10 +8,13 @@ interface Product {
   name: string;
   price: number;
   image: string;
-  description: string; // Thêm trường mô tả nếu có
+  description: string;
 }
 
 function ProductList() {
+  const queryClient = useQueryClient();
+
+  // Fetch product list
   const fetchProducts = async () => {
     const res = await fetch("http://localhost:3001/products");
     if (!res.ok) {
@@ -20,13 +23,32 @@ function ProductList() {
     return res.json();
   };
 
-  // state data, isLoading, error
+  // Mutation to delete product
+  const deleteProduct = useMutation({
+    mutationFn: async (id: string) => {
+      const res = await fetch(`http://localhost:3001/products/${id}`, {
+        method: "DELETE",
+      });
+      if (!res.ok) {
+        throw new Error("Xóa sản phẩm thất bại");
+      }
+      return res.json();
+    },
+    onSuccess: () => {
+      message.success("Đã xóa sản phẩm");
+      queryClient.invalidateQueries({ queryKey: ["products"] }); // Refetch
+    },
+    onError: (error: any) => {
+      message.error(error.message || "Đã xảy ra lỗi khi xóa");
+    },
+  });
+
   const { data, isLoading, error } = useQuery({
     queryKey: ["products"],
     queryFn: fetchProducts,
   });
 
-  // Cột cho bảng
+  // Table columns
   const columns = [
     {
       title: "ID",
@@ -44,48 +66,59 @@ function ProductList() {
     {
       title: "Image",
       dataIndex: "image",
-      render: (src: string, record: Product) => {
-        return <Image src={src} width={100} alt={record.name} />;
-      },
+      render: (src: string, record: Product) => (
+        <Image src={src} width={100} alt={record.name} />
+      ),
     },
     {
       title: "Description",
       dataIndex: "description",
-      render: (text: string) => {
-        return <span>{text || "Không có mô tả"}</span>;
-      },
+      render: (text: string) => <span>{text || "Không có mô tả"}</span>,
+    },
+    {
+      title: "Hành động",
+      key: "action",
+      render: (_: any, record: Product) => (
+        <Popconfirm
+          title="Bạn có chắc muốn xóa sản phẩm này?"
+          onConfirm={() => deleteProduct.mutate(record.id)}
+          okText="Xóa"
+          cancelText="Hủy"
+        >
+          <Button type="primary" danger loading={deleteProduct.isPending}>
+            Xóa
+          </Button>
+        </Popconfirm>
+      ),
     },
   ];
 
   return (
     <div>
       <HeaderNav />
-      
-      {/* Hiển thị khi đang tải dữ liệu */}
+
       {isLoading && (
         <div style={{ textAlign: "center", marginTop: "50px" }}>
           <Spin size="large" />
         </div>
       )}
-      
-      {/* Hiển thị khi có lỗi */}
+
       {error && (
         <Alert
           message="Lỗi"
-          description={error.message}
+          description={(error as Error).message}
           type="error"
           showIcon
           style={{ marginBottom: 16 }}
         />
       )}
-      
-      {/* Hiển thị bảng sản phẩm */}
+
       {!isLoading && !error && data && (
         <Table
           dataSource={data}
           columns={columns}
           rowKey={"id"}
-          pagination={{ pageSize: 5 }} // Phân trang
+          pagination={{ pageSize: 5 }}
         />
       )}
     </div>
