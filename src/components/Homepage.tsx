@@ -1,4 +1,4 @@
-import HeaderNav from "./HeaderNav";
+import HeaderNav from "./Header";
 
 function Homepage() {
   return (

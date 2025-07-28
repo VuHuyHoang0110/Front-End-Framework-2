@@ -1,7 +1,7 @@
 import React from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { Image, Spin, Table, Alert, Button, Popconfirm, message } from "antd";
-import HeaderNav from "./HeaderNav";
+import HeaderNav from "./Header";
 
 interface Product {
   id: string;
