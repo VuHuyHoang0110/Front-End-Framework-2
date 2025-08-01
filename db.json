@@ -11,6 +11,19 @@
       "name": "Xiaomi Mi 14",
       "price": 599,
       "image": "https://images.ctfassets.net/hrltx12pl8hq/28ECAQiPJZ78hxatLTa7Ts/2f695d869736ae3b0de3e56ceaca3958/free-nature-images.jpg?fit=fill&w=1200&h=630"
+    },
+    {
+      "id": "7c3e",
+      "name": "Hoàng",
+      "price": 1111,
+      "description": "111111",
+      "image": "https://images.pexels.com/photos/60597/dahlia-red-blossom-bloom-60597.jpeg?auto=compress&cs=tinysrgb&w=600"
+    },
+    {
+      "id": "9426",
+      "name": "quần áo thể thao hàng vn",
+      "price": 111111,
+      "image": "https://images.pexels.com/photos/326055/pexels-photo-326055.jpeg?auto=compress&cs=tinysrgb&w=600"
     }
   ],
   "categories": [
@@ -29,25 +42,25 @@
   ],
   "users": [
     {
-      "id": 1,
+      "id": "1",
       "name": "thuan",
       "email": "user1@example.com",
       "IsActive": true
     },
     {
-      "id": 2,
+      "id": "2",
       "name": "User 2",
       "email": "user2@example.com",
       "IsActive": true
     },
     {
-      "id": 3,
+      "id": "3",
       "name": "User 3",
       "email": "user3@example.com",
       "IsActive": false
     },
     {
-      "id": 4,
+      "id": "4",
       "name": "User 4",
       "email": "user4@example.com",
       "IsActive": true

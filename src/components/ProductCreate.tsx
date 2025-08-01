@@ -1,64 +1,65 @@
-import { Button, Form, Input, InputNumber } from "antd";
+import { useMutation } from "@tanstack/react-query";
+import { Button, Form, Input, InputNumber, message } from "antd";
+import axios from "axios";
 
-const ProductCreate = () => {
+function ProductCreate() {
   const [form] = Form.useForm();
 
-  const onSubmit = (values: any) => {
-    console.log("Submitted data:", values);
+  const addProduct = async (values: any) => {
+    return await axios.post("http://localhost:3001/products", values);
+  };
+
+  const { mutate } = useMutation({
+    mutationFn: addProduct,
+    onSuccess: () => {
+      message.success("Thanh cong");
+    },
+  });
+
+  const handleSubmit = async (values: any) => {
+    mutate(values);
   };
 
   return (
-    <div className="max-w-[1200px] mx-auto mt-6">
-      <h1 className="text-3xl font-bold text-center">Create Product</h1>
-
-      <Form
-        form={form}
-        layout="vertical"
-        onFinish={onSubmit}
-        autoComplete="off"
-      >
+    <div className=" mt-6 max-w-[1200px] mx-auto px-6">
+      <h1 className="text-3xl font-bold  text-center">Product Create</h1>
+      <Form form={form} layout="vertical" onFinish={handleSubmit}>
         <Form.Item
           label="Product Name *"
           name="name"
           rules={[
-            { required: true, message: "Tên sản phẩm là bắt buộc" },
-            { min: 3, message: "Tên phải có ít nhất 3 ký tự" },
+            { required: true, message: "ten truong bat buoc" },
+            {
+              min: 3,
+              message: "gia tri lon hon 3",
+            },
           ]}
         >
-          <Input placeholder="Enter product name" />
+          <Input />
         </Form.Item>
-
         <Form.Item
           label="Product Price *"
           name="price"
           rules={[
-            { required: true, message: "Giá là bắt buộc" },
+            { required: true, message: "ten truong bat buoc" },
             {
-              type: "number",
               min: 3,
-              message: "Giá phải lớn hơn hoặc bằng 3",
+              type: "number",
+              message: "gia tri lon hon 3",
             },
           ]}
         >
-          <InputNumber
-            min={0}
-            style={{ width: "100%" }}
-            placeholder="Enter price"
-          />
+          <InputNumber />
         </Form.Item>
-
-        <Form.Item label="Image URL" name="image">
-          <Input placeholder="Enter image URL" />
+        <Form.Item label="Image" name="image">
+          <Input type="text" />
         </Form.Item>
-
-        <Form.Item>
-          <Button type="primary" htmlType="submit" block>
-            Submit
-          </Button>
-        </Form.Item>
+        <Button type="primary" htmlType="submit">
+          Submit
+        </Button>
       </Form>
     </div>
   );
-};
+}
 
 export default ProductCreate;
